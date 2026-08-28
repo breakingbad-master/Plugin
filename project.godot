@@ -1,0 +1,22 @@
+; Engine configuration file.
+; UVE Animation test project
+config_version=5
+
+[application]
+config/name="UVE Animation Godot Test"
+run/main_scene="res://tests/uve_smoke_test.tscn"
+
+[display]
+
+[display/window]
+size/viewport_width=1280
+size/viewport_height=720
+size/window_width_override=960
+size/window_height_override=540
+
+[rendering]
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
+
+[editor_plugins]
+enabled=PackedStringArray("res://addons/uve_animation/plugin.cfg")
