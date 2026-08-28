@@ -19,12 +19,19 @@ arch = ARGUMENTS.get('arch', 'x86_64')
 if not os.path.isdir(os.path.join(godot_cpp, 'include')):
     raise RuntimeError('godot_cpp must point to a godot-cpp checkout root')
 
-env = Environment()
-env.Append(CPPPATH=[os.path.join(godot_cpp, 'include'), os.path.join(godot_cpp, 'gen', 'include'), 'native/include', os.path.join(ROOT, 'native', 'third_party')] + RUNTIME_INCLUDES)
+env = Environment(ENV=os.environ)
+cpp_paths = [os.path.join(godot_cpp, 'include'), os.path.join(godot_cpp, 'gen', 'include'), os.path.join(godot_cpp, 'gdextension'), 'native/include', os.path.join(ROOT, 'native', 'third_party')] + RUNTIME_INCLUDES
+env.Append(CPPPATH=cpp_paths)
 env.Append(CXXFLAGS=['-std=c++17', '-fPIC', '-O2'])
 env.Append(LIBPATH=[os.path.join(godot_cpp, 'bin')])
 
 if platform == 'android':
+    ndk = os.environ.get('ANDROID_NDK_ROOT')
+    if ndk:
+        toolchain = os.path.join(ndk, 'toolchains', 'llvm', 'prebuilt', 'linux-x86_64', 'bin')
+        env['CC'] = os.path.join(toolchain, 'aarch64-linux-android26-clang') if arch == 'arm64' else os.path.join(toolchain, 'armv7a-linux-androideabi26-clang')
+        env['CXX'] = env['CC'] + '++'
+        env['LINK'] = env['CXX']
     env.Append(CPPDEFINES=['ANDROID_ENABLED'])
     env.Append(SHLIBSUFFIX='.so')
     android_name = 'armeabi-v7a' if arch in ('arm32', 'armeabi-v7a') else arch
