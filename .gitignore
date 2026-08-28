@@ -1,0 +1,5 @@
+__pycache__/
+.sconsign.dblite
+addons/uve_animation/bin/*.so
+addons/uve_animation/bin/*.dll
+addons/uve_animation/bin/*.dylib
