@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 import os
-from SCons.Script import Environment, ARGUMENTS
+from SCons.Script import Environment, ARGUMENTS, Dir
 
-ROOT = os.path.abspath(os.path.dirname(__file__))
+ROOT = os.path.abspath(str(Dir('#').abspath))
 UVE_ROOT = os.path.join(ROOT, 'thirdparty', 'uvestudio', 'Animation')
 RUNTIME_SOURCES = []
 RUNTIME_INCLUDES = []
