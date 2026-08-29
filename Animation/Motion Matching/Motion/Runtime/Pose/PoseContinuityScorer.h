@@ -2,7 +2,16 @@
 
 #include "../Core/MMModule.h"
 
+#include <vector>
+
 namespace motion {
-// Blueprint module 049: Penalizes visually bad transitions.
+
+class PoseContinuityScorer {
+public:
+    static float score(const std::vector<float> &previous, const std::vector<float> &next,
+                       float weight = 1.0f);
+};
+
 const ModuleDescriptor &module_posecontinuityscorer();
+
 } // namespace motion
