@@ -1,0 +1,58 @@
+name: Motion Matching Validation
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: motion-matching-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  desktop:
+    name: Desktop Release and CTest
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure
+        run: cmake -S "Animation/Motion Matching" -B build/desktop -DCMAKE_BUILD_TYPE=Release
+      - name: Build
+        run: cmake --build build/desktop --parallel 2
+      - name: Test
+        run: ctest --test-dir build/desktop --output-on-failure
+      - name: Verify shared library
+        run: test -s build/desktop/libmotion_matching.so
+
+  android-arm64:
+    name: Android arm64 Shared Library
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Android SDK and NDK
+        uses: android-actions/setup-android@v3
+      - name: Install Android NDK
+        run: sdkmanager "platform-tools" "platforms;android-26" "build-tools;35.0.0" "ndk;23.2.8568313"
+      - name: Configure Android arm64
+        run: >-
+          cmake -S "Animation/Motion Matching" -B build/android-arm64
+          -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_TOOLCHAIN_FILE="$ANDROID_SDK_ROOT/ndk/23.2.8568313/build/cmake/android.toolchain.cmake"
+          -DANDROID_ABI=arm64-v8a
+          -DANDROID_PLATFORM=android-26
+      - name: Build shared runtime
+        run: cmake --build build/android-arm64 --target motion_matching_shared --parallel 2
+      - name: Verify Android artifact
+        run: test -s build/android-arm64/libmotion_matching.so
+      - name: Package artifact
+        run: mkdir -p dist && cp build/android-arm64/libmotion_matching.so dist/libmotion_matching.android.arm64.so
+      - name: Upload Android artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: motion-matching-android-arm64
+          path: dist/libmotion_matching.android.arm64.so
+          if-no-files-found: error
