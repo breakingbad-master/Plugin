@@ -1,8 +1,27 @@
 #pragma once
 
-#include "../Core/MMModule.h"
+#include "MMCore.h"
+#include "MMModule.h"
+
+#include <cstddef>
+#include <cstdint>
 
 namespace motion {
-// Blueprint module 002: Per-frame context shared by search, scoring, pose, trajectory, and playback.
+
+struct MMRuntimeContext {
+    std::uint64_t frame = 0;
+    std::uint32_t agent_id = 0;
+    float delta_seconds = 0.0f;
+    SearchBudget budget;
+    Vec3 root_position;
+    Vec3 root_velocity;
+    bool grounded = true;
+    bool authoritative_physics = true;
+
+    bool valid() const;
+    void advance(float delta);
+};
+
 const ModuleDescriptor &module_mmruntimecontext();
+
 } // namespace motion
