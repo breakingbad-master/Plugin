@@ -1,4 +1,5 @@
 #include "MMCore.h"
+#include "../Query/MotionQueryDatabase.h"
 
 #include <algorithm>
 #include <cmath>
@@ -10,10 +11,6 @@ Vec3 Vec3::operator+(const Vec3 &rhs) const { return {x + rhs.x, y + rhs.y, z + 
 Vec3 Vec3::operator-(const Vec3 &rhs) const { return {x - rhs.x, y - rhs.y, z - rhs.z}; }
 Vec3 Vec3::operator*(float scalar) const { return {x * scalar, y * scalar, z * scalar}; }
 float Vec3::length_squared() const { return x * x + y * y + z * z; }
-
-void MotionQueryDatabase::clear() { candidates_.clear(); }
-void MotionQueryDatabase::add_candidate(MotionCandidate candidate) { candidates_.push_back(std::move(candidate)); }
-const std::vector<MotionCandidate> &MotionQueryDatabase::candidates() const { return candidates_; }
 
 MotionMatcher::MotionMatcher(ScoreWeights weights) : weights_(weights) {}
 
@@ -82,10 +79,10 @@ CandidateScore MotionMatcher::score(const MotionQuery &query, const MotionCandid
 SearchResult MotionMatcher::search(const MotionQuery &query, const MotionQueryDatabase &database,
                                    const SearchBudget &budget, const MotionCandidate *fallback) const {
     SearchResult result;
-    const std::size_t limit = std::min(budget.max_candidates, database.candidates().size());
+    const std::size_t limit = std::min(budget.max_candidates, database.samples().size());
     const MotionCandidate *previous = nullptr;
     for (std::size_t i = 0; i < limit; ++i) {
-        const MotionCandidate &candidate = database.candidates()[i];
+        const MotionCandidate &candidate = database.samples()[i];
         ++result.evaluated;
         std::string reason;
         if (!compatible(query, candidate, reason)) {

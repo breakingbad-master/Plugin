@@ -1,4 +1,5 @@
 #include "../Runtime/Core/MMCore.h"
+#include "../Runtime/Query/MotionQueryDatabase.h"
 
 #include <cassert>
 #include <cmath>
@@ -8,9 +9,9 @@ using namespace motion;
 
 int main() {
     MotionQueryDatabase database;
-    database.add_candidate({"walk_a", 10, {0.0f, 0.0f, 0.0f}, {"locomotion", "walk", "ground"}, 0.0f, 0.0f});
-    database.add_candidate({"vault_low", 42, {0.1f, 0.1f, 0.1f}, {"traversal", "vault", "ground"}, 1.0f, 0.5f});
-    database.add_candidate({"vault_high", 45, {0.2f, 0.2f, 0.2f}, {"traversal", "vault", "ground"}, 0.5f, 0.5f});
+    database.add({"walk_a", 10, {0.0f, 0.0f, 0.0f}, {"locomotion", "walk", "ground"}, 0.0f, 0.0f});
+    database.add({"vault_low", 42, {0.1f, 0.1f, 0.1f}, {"traversal", "vault", "ground"}, 1.0f, 0.5f});
+    database.add({"vault_high", 45, {0.2f, 0.2f, 0.2f}, {"traversal", "vault", "ground"}, 0.5f, 0.5f});
     MotionCandidate fallback{"idle_fallback", 0, {1.0f, 1.0f, 1.0f}, {"idle"}, 0.0f, 0.0f};
 
     MotionMatcher matcher({1.0f, 0.0f, 0.0f, 1.0f});

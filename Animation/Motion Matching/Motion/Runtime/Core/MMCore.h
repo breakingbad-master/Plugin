@@ -87,15 +87,7 @@ struct SearchResult {
     bool used_fallback = true;
 };
 
-class MotionQueryDatabase {
-public:
-    void clear();
-    void add_candidate(MotionCandidate candidate);
-    const std::vector<MotionCandidate> &candidates() const;
-
-private:
-    std::vector<MotionCandidate> candidates_;
-};
+class MotionQueryDatabase;
 
 class MotionMatcher {
 public:
