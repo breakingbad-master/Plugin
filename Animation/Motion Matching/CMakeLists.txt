@@ -12,7 +12,7 @@ list(FILTER MOTION_SOURCES EXCLUDE REGEX "/Tests/")
 
 add_library(motion_matching_core STATIC ${MOTION_SOURCES})
 add_library(motion_matching_shared SHARED ${MOTION_SOURCES} ../../Plugin/src/motion_matching_c_api.cpp)
-set_target_properties(motion_matching_shared PROPERTIES OUTPUT_NAME motion_matching)
+set_target_properties(motion_matching_shared PROPERTIES OUTPUT_NAME shared_plugins)
 foreach(runtime_target IN ITEMS motion_matching_core motion_matching_shared)
     target_include_directories(${runtime_target} PUBLIC Motion/Runtime Motion/Platform)
     target_compile_options(${runtime_target} PRIVATE -Wall -Wextra -Wpedantic)
