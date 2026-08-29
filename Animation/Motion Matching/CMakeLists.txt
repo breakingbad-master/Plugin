@@ -36,3 +36,9 @@ foreach(test_name IN ITEMS MMCoreTests MotionTrajectoryTests MotionMatchingColli
     target_compile_options(${test_name} PRIVATE -Wall -Wextra -Wpedantic)
     add_test(NAME ${test_name} COMMAND ${test_name})
 endforeach()
+
+add_executable(MotionRuntimeCapiTests ../../Plugin/tests/motion_matching_c_api_tests.cpp ../../Plugin/src/motion_matching_c_api.cpp)
+target_include_directories(MotionRuntimeCapiTests PRIVATE ../../Plugin/src Motion/Runtime Motion/Platform)
+target_link_libraries(MotionRuntimeCapiTests PRIVATE motion_matching_core)
+target_compile_options(MotionRuntimeCapiTests PRIVATE -Wall -Wextra -Wpedantic)
+add_test(NAME MotionRuntimeCapiTests COMMAND MotionRuntimeCapiTests)
