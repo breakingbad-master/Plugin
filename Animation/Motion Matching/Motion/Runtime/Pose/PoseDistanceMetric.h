@@ -2,7 +2,17 @@
 
 #include "../Core/MMModule.h"
 
+#include <vector>
+
 namespace motion {
-// Blueprint module 047: Distance calculation between query and candidate features.
+
+class PoseDistanceMetric {
+public:
+    static float squared_distance(const std::vector<float> &query,
+                                  const std::vector<float> &candidate,
+                                  const std::vector<float> &weights = {});
+};
+
 const ModuleDescriptor &module_posedistancemetric();
+
 } // namespace motion
