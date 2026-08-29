@@ -1,8 +1,23 @@
 #pragma once
 
+#include "../Core/MMCore.h"
 #include "../Core/MMModule.h"
 
+#include <vector>
+
 namespace motion {
-// Blueprint module 043: Relative transforms between important bones.
+
+struct PoseRelativePair {
+    Vec3 source;
+    Vec3 target;
+    float weight = 1.0f;
+};
+
+class PoseRelativeFeature {
+public:
+    static std::vector<float> encode(const std::vector<PoseRelativePair> &pairs);
+};
+
 const ModuleDescriptor &module_poserelativefeature();
+
 } // namespace motion
