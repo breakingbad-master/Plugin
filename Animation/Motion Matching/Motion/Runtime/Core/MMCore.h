@@ -94,6 +94,9 @@ public:
     explicit MotionMatcher(ScoreWeights weights = {});
     SearchResult search(const MotionQuery &query, const MotionQueryDatabase &database,
                         const SearchBudget &budget, const MotionCandidate *fallback) const;
+    SearchResult search_subset(const MotionQuery &query, const MotionQueryDatabase &database,
+                               const std::vector<std::size_t> &indices, const SearchBudget &budget,
+                               const MotionCandidate *fallback) const;
 
 private:
     bool compatible(const MotionQuery &query, const MotionCandidate &candidate,
