@@ -11,8 +11,12 @@ file(GLOB_RECURSE MOTION_SOURCES CONFIGURE_DEPENDS
 list(FILTER MOTION_SOURCES EXCLUDE REGEX "/Tests/")
 
 add_library(motion_matching_core STATIC ${MOTION_SOURCES})
-target_include_directories(motion_matching_core PUBLIC Motion/Runtime Motion/Platform)
-target_compile_options(motion_matching_core PRIVATE -Wall -Wextra -Wpedantic)
+add_library(motion_matching_shared SHARED ${MOTION_SOURCES})
+set_target_properties(motion_matching_shared PROPERTIES OUTPUT_NAME motion_matching)
+foreach(runtime_target IN ITEMS motion_matching_core motion_matching_shared)
+    target_include_directories(${runtime_target} PUBLIC Motion/Runtime Motion/Platform)
+    target_compile_options(${runtime_target} PRIVATE -Wall -Wextra -Wpedantic)
+endforeach()
 
 enable_testing()
 foreach(test_name IN ITEMS MMCoreTests MotionTrajectoryTests MotionMatchingCollisionTests MotionQueryFeatureVectorTests PoseFeatureExtractorTests AnimationChooserTests MotionWarpingSolverTests TraversalSystemTests MotionQueryDatabaseSerializerTests MotionQuerySearchTests MMFrameCacheTests MMRuntimeContextTests MotionQueryNormalizerTests MotionQueryWeightProfileTests)
