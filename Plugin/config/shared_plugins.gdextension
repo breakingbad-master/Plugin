@@ -1,0 +1,12 @@
+[configuration]
+entry_symbol = "plugin_library_init"
+compatibility_minimum = 4.2
+reloadable = true
+
+[libraries]
+linux.x86_64 = "res://Plugin/bin/libshared_plugins.linux.x86_64.so"
+windows.x86_64 = "res://Plugin/bin/shared_plugins.windows.x86_64.dll"
+macos.arm64 = "res://Plugin/bin/libshared_plugins.macos.arm64.dylib"
+android.arm64 = "res://Plugin/bin/libshared_plugins.android.arm64.so"
+android.armeabi-v7a = "res://Plugin/bin/libshared_plugins.android.armeabi-v7a.so"
+web.wasm32 = "res://Plugin/bin/shared_plugins.web.wasm32.wasm"

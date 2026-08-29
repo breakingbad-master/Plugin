@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "shared_library": "res://Plugin/config/shared_plugins.gdextension",
+  "plugins": [
+    {
+      "id": "uve.control_rig",
+      "name": "UniVex Control Rig",
+      "category": "Animation",
+      "enabled": true,
+      "capabilities": ["control_rig.runtime", "control_rig.solver"]
+    },
+    {
+      "id": "uve.motion_query",
+      "name": "UniVex Motion Query",
+      "category": "Animation",
+      "enabled": true,
+      "capabilities": ["motion_query.runtime", "motion_query.asset_sampling", "motion_query.diagnostics"]
+    }
+  ]
+}
